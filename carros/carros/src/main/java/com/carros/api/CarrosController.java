@@ -19,7 +19,7 @@ public class CarrosController {
     private CarroService carroService;
 
     @GetMapping()
-    public ResponseEntity<List<CarroDTO>> get(){
+    public ResponseEntity get(){
         return ResponseEntity.ok(carroService.getCarros());
     }
 
@@ -29,8 +29,8 @@ public class CarrosController {
     }
 
     @GetMapping("/tipo/{tipo}")
-    public Iterable<Carro> get(@PathVariable("tipo") String tipo){
-        return carroService.getCarrosByTipo(tipo);
+    public ResponseEntity get(@PathVariable("tipo") String tipo){
+        return ResponseEntity.ok(carroService.getCarrosByTipo(tipo));
     }
 
     @PostMapping()

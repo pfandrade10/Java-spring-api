@@ -19,16 +19,17 @@ public class CarroService {
 
     public List<CarroDTO> getCarros(){
         List<Carro> carros = repo.findAll();
-        List<CarroDTO> listCarros = new ArrayList<>();
+
 
         //manualmente fazendo um foreach:
-        /*for (Carro item:
+        /* List<CarroDTO> listCarros = new ArrayList<>();
+        for (Carro item:
              carros) {
             listCarros.add(new CarroDTO(item));
         }*/
 
         //Via lambda
-        listCarros = carros.stream().map(x -> new CarroDTO(x)).collect(Collectors.toList());
+        List<CarroDTO> listCarros = carros.stream().map(x -> new CarroDTO(x)).collect(Collectors.toList());
 
         return listCarros;
     }
@@ -37,8 +38,12 @@ public class CarroService {
         return repo.findById(id);
     }
 
-    public Iterable<Carro> getCarrosByTipo(String tipo) {
-        return repo.findByTipo(tipo);
+    public List<CarroDTO> getCarrosByTipo(String tipo) {
+        List<Carro> carros = repo.findByTipo(tipo);
+
+        List<CarroDTO> listCarros = carros.stream().map(x -> new CarroDTO(x)).collect(Collectors.toList());
+
+        return listCarros;
     }
 
     public Carro insert(Carro carro) {
