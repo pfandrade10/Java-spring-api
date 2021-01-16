@@ -1,6 +1,7 @@
 package com.carros.domain;
 
 import com.carros.domain.Estruturas.EstruturaCarro;
+import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -8,6 +9,7 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CarroService {
@@ -15,9 +17,20 @@ public class CarroService {
     @Autowired
     private CarroRepositorio repo;
 
-    public Iterable<Carro> getCarros(){
+    public List<CarroDTO> getCarros(){
+        List<Carro> carros = repo.findAll();
+        List<CarroDTO> listCarros = new ArrayList<>();
 
-           return repo.findAll();
+        //manualmente fazendo um foreach:
+        /*for (Carro item:
+             carros) {
+            listCarros.add(new CarroDTO(item));
+        }*/
+
+        //Via lambda
+        listCarros = carros.stream().map(x -> new CarroDTO(x)).collect(Collectors.toList());
+
+        return listCarros;
     }
 
     public Optional<Carro> getCarroById(Long id){

@@ -2,6 +2,7 @@ package com.carros.api;
 
 import com.carros.domain.Carro;
 import com.carros.domain.CarroService;
+import com.carros.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class CarrosController {
     private CarroService carroService;
 
     @GetMapping()
-    public ResponseEntity<Iterable<Carro>> get(){
+    public ResponseEntity<List<CarroDTO>> get(){
         return ResponseEntity.ok(carroService.getCarros());
     }
 
