@@ -34,8 +34,20 @@ public class CarroService {
         return listCarros;
     }
 
-    public Optional<Carro> getCarroById(Long id){
-        return repo.findById(id);
+    public Optional<CarroDTO> getCarroById(Long id){
+
+        Optional<Carro> carroDB = repo.findById(id);
+
+        Optional<CarroDTO> carro = carroDB.map(c-> Optional.of(new CarroDTO(c))).orElse(null);
+
+        /*if(carroDB.isPresent()){
+            return Optional.of(new CarroDTO(carroDB.get()));
+        }
+        else{
+            return null;
+        }*/
+
+        return carro;
     }
 
     public List<CarroDTO> getCarrosByTipo(String tipo) {
@@ -54,10 +66,16 @@ public class CarroService {
 
         Assert.notNull(id, "Favor passar o carro a ser alterado!");
 
-        Optional<Carro> optional = getCarroById(id);
+        Optional<CarroDTO> optional = getCarroById(id);
 
-        if(optional.isPresent()){
-            Carro db = optional.get();
+        if(optional == null){
+            return null;
+        }
+
+        Optional<Carro> carroDB = optional.map(x -> Optional.of(new Carro(x.getId(), x.getNome(), x.getTipo()))).orElse(null);
+
+        if(carroDB.isPresent()){
+            Carro db = carroDB.get();
 
             db.setNome(carro.getNome());
             db.setTipo(carro.getTipo());
@@ -75,7 +93,7 @@ public class CarroService {
 
     public String delete(Long id){
         try{
-            Optional<Carro> optionalCarro = getCarroById(id);
+            Optional<CarroDTO> optionalCarro = getCarroById(id);
 
             if(!optionalCarro.isPresent())
                 throw new Exception("Erro ao Realizar exclusão! Registro não encontrado");

@@ -24,7 +24,7 @@ public class CarrosController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Carro> get(@PathVariable("id") Long id){
+    public Optional<CarroDTO> get(@PathVariable("id") Long id){
         return carroService.getCarroById(id);
     }
 
@@ -43,6 +43,10 @@ public class CarrosController {
     @PutMapping("/{id}")
     public String put(@RequestBody Carro carro, @PathVariable("id") Long id){
         Carro carroAlterado = carroService.update(carro, id);
+
+        if(carroAlterado == null){
+            return "Carro informado não existe!";
+        }
 
         return "Carro alterado com sucesso! id: "+carroAlterado.getId();
     }
